@@ -1,4 +1,4 @@
-import { FeaturedCard } from "@/components/UI/Cards";
+import FeaturedCard from "@/components/UI/FeaturedCard";
 import { featuredCards } from "@/constants/data";
 import { router } from "expo-router";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";

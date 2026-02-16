@@ -1,18 +1,20 @@
 import icons from "@/constants/icons";
 import images from "@/constants/images";
+import { useAuth } from "@/lib/AuthContext";
 import { Redirect } from "expo-router";
-import { useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 function SignIn() {
-  const [isAuth, setIsAuth] = useState(false);
+  const { login, isAuthenticated } = useAuth();
 
   function handleLogin() {
-    setIsAuth(true);
+    login();
   }
 
-  if (isAuth) return <Redirect href="/explore" />;
+  if (isAuthenticated) {
+    return <Redirect href="/" />;
+  }
 
   return (
     <SafeAreaView className="bg-white h-full">

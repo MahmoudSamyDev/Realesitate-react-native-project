@@ -1,10 +1,10 @@
+import { useAuth } from "@/lib/AuthContext";
 import { Redirect, Slot } from "expo-router";
 import { ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 function AppLayout() {
-  const isLogedIn = false;
-  const isLoading = false;
+  const { isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
     return (
@@ -13,10 +13,8 @@ function AppLayout() {
       </SafeAreaView>
     );
   }
-  if (isLogedIn) {
-    return <Redirect href="/explore" />;
-  }
-  if (!isLogedIn) {
+
+  if (!isAuthenticated) {
     return <Redirect href="/sign-in" />;
   }
 

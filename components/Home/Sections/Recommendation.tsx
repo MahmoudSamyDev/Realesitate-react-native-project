@@ -1,5 +1,5 @@
-import { Card } from "@/components/UI/Cards";
 import Filters from "@/components/UI/Filters";
+import RecommendedCard from "@/components/UI/RecommendedCard";
 import { filterRecommendationsByCategory } from "@/utils/helpers";
 import { router, useLocalSearchParams } from "expo-router";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
@@ -32,7 +32,7 @@ function Recommendation() {
           }}
         >
           {filteredRecommendations.map((card) => (
-            <Card key={card.id} data={card} />
+            <RecommendedCard key={card.id} data={card} />
           ))}
         </View>
       </ScrollView>

@@ -1,6 +1,6 @@
 import Search from "@/components/Home/Search";
-import { Card } from "@/components/UI/Cards";
 import Filters from "@/components/UI/Filters";
+import RecommendedCard from "@/components/UI/RecommendedCard";
 import icons from "@/constants/icons";
 import { filterRecommendationsByCategory } from "@/utils/helpers";
 import { router, useLocalSearchParams } from "expo-router";
@@ -52,7 +52,7 @@ function Explore() {
         }
         keyExtractor={(item) => item.id}
         numColumns={2}
-        renderItem={({ item }) => <Card data={item} />}
+        renderItem={({ item }) => <RecommendedCard data={item} />}
         showsVerticalScrollIndicator={false}
         contentContainerClassName="px-[20px] pb-20"
         columnWrapperClassName="gap-[12px]"

@@ -328,18 +328,6 @@ export const settings = [
     title: "Payments",
     icon: icons.wallet,
   },
-  // {
-  //   title: "Profile",
-  //   icon: icons.person,
-  // },
-  // {
-  //   title: "Notifications",
-  //   icon: icons.bell,
-  // },
-  {
-    title: "Security",
-    icon: icons.shield,
-  },
   {
     title: "Language",
     icon: icons.language,
