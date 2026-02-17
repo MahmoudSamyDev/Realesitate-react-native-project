@@ -1,6 +1,6 @@
 import icons from "@/constants/icons";
+import { getCardColor, getCardIcon } from "@/utils/helpers/helpers";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-
 interface PaymentCardProps {
   type: "visa" | "mastercard" | "paypal" | "apple-pay";
   cardNumber: string;
@@ -20,36 +20,6 @@ function PaymentCard({
   onPress,
   onEdit,
 }: PaymentCardProps) {
-  const getCardIcon = () => {
-    switch (type) {
-      case "visa":
-        return "https://img.icons8.com/color/480/visa.png";
-      case "mastercard":
-        return "https://img.icons8.com/color/480/mastercard.png";
-      case "paypal":
-        return "https://img.icons8.com/color/480/paypal.png";
-      case "apple-pay":
-        return "https://img.icons8.com/color/480/apple-pay.png";
-      default:
-        return "";
-    }
-  };
-
-  const getCardColor = () => {
-    switch (type) {
-      case "visa":
-        return "bg-blue-50";
-      case "mastercard":
-        return "bg-orange-50";
-      case "paypal":
-        return "bg-blue-50";
-      case "apple-pay":
-        return "bg-gray-50";
-      default:
-        return "bg-accent-100";
-    }
-  };
-
   return (
     <TouchableOpacity
       className="flex flex-col mt-4 p-5 rounded-2xl bg-white shadow-lg shadow-black-100/70 border border-primary-100"
@@ -58,8 +28,8 @@ function PaymentCard({
     >
       <View className="flex flex-row items-center justify-between">
         <View className="flex flex-row items-center">
-          <View className={`${getCardColor()} p-2 rounded-xl`}>
-            <Image source={{ uri: getCardIcon() }} className="w-12 h-8" resizeMode="contain" />
+          <View className={`${getCardColor(type)} p-2 rounded-xl`}>
+            <Image source={getCardIcon(type)} className="w-12 h-8" resizeMode="contain" />
           </View>
           <View className="ml-3">
             <Text className="text-base font-rubik-bold text-black-300">

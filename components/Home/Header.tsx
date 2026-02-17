@@ -1,8 +1,12 @@
 import icons from "@/constants/icons";
 import images from "@/constants/images";
-import { Image, Text, View } from "react-native";
+import { router } from "expo-router";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 function Header() {
+  function routeToNotifications() {
+    router.push("/notifications");
+  }
   return (
     <View className="flex flex-row items-center justify-between mt-5">
       <View className="flex flex-row items-center">
@@ -12,7 +16,9 @@ function Header() {
           <Text className="text-base font-rubik-medium text-black-300">Mahmoud</Text>
         </View>
       </View>
-      <Image source={icons.bell} className="size-6" />
+      <TouchableOpacity onPress={routeToNotifications}>
+        <Image source={icons.bell} className="size-6" />
+      </TouchableOpacity>
     </View>
   );
 }

@@ -403,3 +403,12 @@ export const gallery = [
     image: "https://i.postimg.cc/15827304/berlin.jpg",
   },
 ];
+
+export const propertyTypeOptions = [
+  "Apartments",
+  "Townhomes",
+  "Homes",
+  "Condos",
+  "Duplexes",
+  "Studios",
+];

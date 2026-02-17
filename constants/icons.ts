@@ -32,6 +32,12 @@ import swim from "@/assets/icons/swim.png";
 import wallet from "@/assets/icons/wallet.png";
 import wifi from "@/assets/icons/wifi.png";
 
+// Payments icons
+import applePay from "@/assets/icons/payments/apple-pay.png";
+import mastercard from "@/assets/icons/payments/mastercard.png";
+import paypal from "@/assets/icons/payments/paypal.png";
+import visa from "@/assets/icons/payments/visa.png";
+
 export default {
   google,
   home,
@@ -66,4 +72,8 @@ export default {
   wifi,
   location,
   edit,
+  paypal,
+  visa,
+  mastercard,
+  applePay,
 };

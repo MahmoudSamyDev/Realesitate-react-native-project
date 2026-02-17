@@ -57,7 +57,6 @@ function Payments() {
     expiryDate: string;
     isDefault: boolean;
   }) => {
-    // In a real app, this would make an API call to update the payment method
     console.log("Saving payment data:", data);
     setEditModalVisible(false);
   };

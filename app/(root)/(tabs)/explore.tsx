@@ -2,7 +2,7 @@ import Search from "@/components/Home/Search";
 import Filters from "@/components/UI/Filters";
 import RecommendedCard from "@/components/UI/RecommendedCard";
 import icons from "@/constants/icons";
-import { filterRecommendationsByCategory } from "@/utils/helpers";
+import { filterRecommendationsByCategory } from "@/utils/helpers/helpers";
 import { router, useLocalSearchParams } from "expo-router";
 import { useMemo } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";

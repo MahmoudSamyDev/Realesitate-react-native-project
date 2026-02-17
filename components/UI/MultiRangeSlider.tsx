@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Animated, PanResponder, Text, View } from "react-native";
 
 interface MultiRangeSliderProps {
@@ -25,16 +25,42 @@ export const MultiRangeSlider = ({
   const [sliderWidth, setSliderWidth] = useState(0);
   const [isDraggingLow, setIsDraggingLow] = useState(false);
   const [isDraggingHigh, setIsDraggingHigh] = useState(false);
+  const [tempLowValue, setTempLowValue] = useState(lowValue);
+  const [tempHighValue, setTempHighValue] = useState(highValue);
+
+  // Use refs to store current values so PanResponder always has access to latest values
+  const sliderWidthRef = useRef(0);
+  const lowValueRef = useRef(lowValue);
+  const highValueRef = useRef(highValue);
+  const tempLowValueRef = useRef(tempLowValue);
+  const tempHighValueRef = useRef(tempHighValue);
+
+  // Update refs when values change
+  useEffect(() => {
+    sliderWidthRef.current = sliderWidth;
+  }, [sliderWidth]);
+
+  useEffect(() => {
+    lowValueRef.current = lowValue;
+    highValueRef.current = highValue;
+  }, [lowValue, highValue]);
+
+  useEffect(() => {
+    tempLowValueRef.current = tempLowValue;
+    tempHighValueRef.current = tempHighValue;
+  }, [tempLowValue, tempHighValue]);
 
   const lowThumbX = useRef(new Animated.Value(0)).current;
   const highThumbX = useRef(new Animated.Value(0)).current;
 
   const valueToPx = (value: number) => {
-    return ((value - min) / (max - min)) * sliderWidth;
+    if (sliderWidthRef.current === 0) return 0;
+    return ((value - min) / (max - min)) * sliderWidthRef.current;
   };
 
   const pxToValue = (px: number) => {
-    const value = (px / sliderWidth) * (max - min) + min;
+    if (sliderWidthRef.current === 0) return min;
+    const value = (px / sliderWidthRef.current) * (max - min) + min;
     return Math.round(Math.max(min, Math.min(max, value)));
   };
 
@@ -44,23 +70,23 @@ export const MultiRangeSlider = ({
       onMoveShouldSetPanResponder: () => true,
       onPanResponderGrant: () => {
         setIsDraggingLow(true);
-        lowThumbX.setOffset(valueToPx(lowValue));
-        lowThumbX.setValue(0);
+        setTempLowValue(lowValueRef.current);
       },
       onPanResponderMove: (_, gestureState) => {
-        const newPx = valueToPx(lowValue) + gestureState.dx;
+        if (sliderWidthRef.current === 0) return;
+        const currentPx = valueToPx(lowValueRef.current);
+        const newPx = Math.max(0, Math.min(sliderWidthRef.current, currentPx + gestureState.dx));
         const newValue = pxToValue(newPx);
-        if (newValue < highValue - 1) {
-          lowThumbX.setValue(gestureState.dx);
-        }
+        const currentHighValue = highValueRef.current;
+        const clampedValue = Math.max(min, Math.min(currentHighValue - 1, newValue));
+        setTempLowValue(clampedValue);
       },
-      onPanResponderRelease: (_, gestureState) => {
-        lowThumbX.flattenOffset();
-        const newPx = valueToPx(lowValue) + gestureState.dx;
-        const newValue = pxToValue(newPx);
-        if (newValue < highValue - 1) {
-          onLowChange(newValue);
-        }
+      onPanResponderRelease: () => {
+        const clampedValue = Math.max(
+          min,
+          Math.min(highValueRef.current - 1, tempLowValueRef.current),
+        );
+        onLowChange(clampedValue);
         setIsDraggingLow(false);
       },
     }),
@@ -72,30 +98,33 @@ export const MultiRangeSlider = ({
       onMoveShouldSetPanResponder: () => true,
       onPanResponderGrant: () => {
         setIsDraggingHigh(true);
-        highThumbX.setOffset(valueToPx(highValue));
-        highThumbX.setValue(0);
+        setTempHighValue(highValueRef.current);
       },
       onPanResponderMove: (_, gestureState) => {
-        const newPx = valueToPx(highValue) + gestureState.dx;
+        if (sliderWidthRef.current === 0) return;
+        const currentPx = valueToPx(highValueRef.current);
+        const newPx = Math.max(0, Math.min(sliderWidthRef.current, currentPx + gestureState.dx));
         const newValue = pxToValue(newPx);
-        if (newValue > lowValue + 1) {
-          highThumbX.setValue(gestureState.dx);
-        }
+        const currentLowValue = lowValueRef.current;
+        const clampedValue = Math.max(currentLowValue + 1, Math.min(max, newValue));
+        setTempHighValue(clampedValue);
       },
-      onPanResponderRelease: (_, gestureState) => {
-        highThumbX.flattenOffset();
-        const newPx = valueToPx(highValue) + gestureState.dx;
-        const newValue = pxToValue(newPx);
-        if (newValue > lowValue + 1) {
-          onHighChange(newValue);
-        }
+      onPanResponderRelease: () => {
+        const clampedValue = Math.max(
+          lowValueRef.current + 1,
+          Math.min(max, tempHighValueRef.current),
+        );
+        onHighChange(clampedValue);
         setIsDraggingHigh(false);
       },
     }),
   ).current;
 
-  const lowPercent = ((lowValue - min) / (max - min)) * 100;
-  const highPercent = ((highValue - min) / (max - min)) * 100;
+  const displayLowValue = isDraggingLow ? tempLowValue : lowValue;
+  const displayHighValue = isDraggingHigh ? tempHighValue : highValue;
+
+  const lowPercent = ((displayLowValue - min) / (max - min)) * 100;
+  const highPercent = ((displayHighValue - min) / (max - min)) * 100;
 
   return (
     <View className="py-4">
@@ -114,7 +143,11 @@ export const MultiRangeSlider = ({
 
       {/* Slider Container */}
       <View
-        onLayout={(e) => setSliderWidth(e.nativeEvent.layout.width)}
+        onLayout={(e) => {
+          const width = e.nativeEvent.layout.width;
+          setSliderWidth(width);
+          sliderWidthRef.current = width;
+        }}
         className="h-12 justify-center"
       >
         {/* Track */}
@@ -156,11 +189,11 @@ export const MultiRangeSlider = ({
       <View className="flex-row justify-between mt-2">
         <Text className="text-base font-rubik-semibold text-primary-300">
           {prefix}
-          {lowValue}
+          {displayLowValue}
         </Text>
         <Text className="text-base font-rubik-semibold text-primary-300">
           {prefix}
-          {highValue}
+          {displayHighValue}
         </Text>
       </View>
     </View>

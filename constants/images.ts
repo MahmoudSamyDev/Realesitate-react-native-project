@@ -14,6 +14,9 @@ import japan from "@/assets/images/Featured/japan.png";
 import maldives from "@/assets/images/Featured/maldives.jpeg";
 import newYork from "@/assets/images/Featured/new-york.png";
 
+// contants
+import avatar from "@/assets/images/Main/avatar.png";
+
 export default {
   onboarding,
   newYork,
@@ -27,4 +30,5 @@ export default {
   maldives,
   berlin,
   PersonalImg,
+  avatar,
 };

@@ -1,5 +1,6 @@
-import FilterModal, { FilterValues } from "@/components/UI/FilterModal";
+import FilterModal from "@/components/UI/FilterModal/FilterModal";
 import icons from "@/constants/icons";
+import type { FilterValues } from "@/utils/Types/appartments";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Image, TextInput, TouchableOpacity, View } from "react-native";

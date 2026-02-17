@@ -8,7 +8,9 @@ import {
   Dimensions,
   FlatList,
   Image,
+  Linking,
   ScrollView,
+  Share,
   Text,
   TouchableOpacity,
   View,
@@ -24,11 +26,57 @@ function SingleProperty() {
   const propertyDetails = allProperties.find((property) => property.id === id);
   const isInWatchlist = isWatchlisted(id || "");
 
-  const handleWatchlistToggle = () => {
+  function handleWatchlistToggle() {
     if (id) {
       toggleWatchlist(id);
     }
-  };
+  }
+
+  async function handleShare() {
+    try {
+      await Share.share({
+        message: `Check out this amazing property: ${propertyDetails?.title}\nPrice: ${propertyDetails?.price}\nRating: ${propertyDetails?.rating}⭐`,
+        title: propertyDetails?.title || "Property Listing",
+      });
+    } catch (error) {
+      console.error("Error sharing:", error);
+    }
+  }
+
+  async function handleCall() {
+    const phoneNumber = property.agent.phone;
+    const phoneUrl = `tel:${phoneNumber}`;
+
+    try {
+      const supported = await Linking.canOpenURL(phoneUrl);
+      if (supported) {
+        await Linking.openURL(phoneUrl);
+      } else {
+        console.error("Phone calls not supported");
+      }
+    } catch (error) {
+      console.error("Error making call:", error);
+    }
+  }
+
+  async function handleWhatsApp() {
+    const phoneNumber = property.agent.phone.replace(/[^0-9]/g, "");
+    const message = encodeURIComponent(
+      `Hi ${property.agent.name}, I'm interested in the property "${property.name}" listed at ${property.price}.`,
+    );
+    const whatsappUrl = `whatsapp://send?phone=${phoneNumber}&text=${message}`;
+
+    try {
+      const supported = await Linking.canOpenURL(whatsappUrl);
+      if (supported) {
+        await Linking.openURL(whatsappUrl);
+      } else {
+        console.error("WhatsApp not installed");
+      }
+    } catch (error) {
+      console.error("Error opening WhatsApp:", error);
+    }
+  }
 
   const property = {
     image: propertyDetails?.image,
@@ -44,6 +92,7 @@ function SingleProperty() {
       avatar: images.PersonalImg,
       name: "Mahmoud Samy",
       email: "mahmoud.samy@realtor.com",
+      phone: "+1234567890",
     },
     description:
       "This stunning modern family house offers the perfect blend of comfort and style. Located in a quiet neighborhood, it features spacious rooms, high ceilings, and large windows that fill the space with natural light. The open floor plan creates a seamless flow between living areas, making it ideal for both everyday living and entertaining guests.",
@@ -76,7 +125,9 @@ function SingleProperty() {
                     tintColor={isInWatchlist ? "#F75555" : "#191D31"}
                   />
                 </TouchableOpacity>
-                <Image source={icons.send} className="size-7" />
+                <TouchableOpacity onPress={handleShare}>
+                  <Image source={icons.send} className="size-7" />
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -137,8 +188,12 @@ function SingleProperty() {
               </View>
 
               <View className="flex flex-row items-center gap-3">
-                <Image source={icons.chat} className="size-7" />
-                <Image source={icons.phone} className="size-7" />
+                <TouchableOpacity onPress={handleWhatsApp}>
+                  <Image source={icons.chat} className="size-7" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleCall}>
+                  <Image source={icons.phone} className="size-7" />
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -151,32 +206,23 @@ function SingleProperty() {
           <View className="mt-7">
             <Text className="text-black-300 text-xl font-rubik-bold">Facilities</Text>
 
-            {property.facilities.length > 0 && (
-              <View className="flex flex-row flex-wrap items-start justify-start mt-2 gap-5">
-                {property.facilities.map((item: string, index: number) => {
-                  const facility = facilities.find((facility) => facility.title === item);
+            <View className="flex flex-row flex-wrap items-start justify-start mt-2 gap-5">
+              {facilities.map((facility, index) => (
+                <View key={index} className="flex flex-1 flex-col items-center min-w-16 max-w-20">
+                  <View className="size-14 bg-primary-100 rounded-full flex items-center justify-center">
+                    <Image source={facility.icon} className="size-6" />
+                  </View>
 
-                  return (
-                    <View
-                      key={index}
-                      className="flex flex-1 flex-col items-center min-w-16 max-w-20"
-                    >
-                      <View className="size-14 bg-primary-100 rounded-full flex items-center justify-center">
-                        <Image source={facility ? facility.icon : icons.info} className="size-6" />
-                      </View>
-
-                      <Text
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                        className="text-black-300 text-sm text-center font-rubik mt-1.5"
-                      >
-                        {item}
-                      </Text>
-                    </View>
-                  );
-                })}
-              </View>
-            )}
+                  <Text
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    className="text-black-300 text-sm text-center font-rubik mt-1.5"
+                  >
+                    {facility.title}
+                  </Text>
+                </View>
+              ))}
+            </View>
           </View>
 
           {property.gallery.length > 0 && (
@@ -200,7 +246,9 @@ function SingleProperty() {
             <Text className="text-black-300 text-xl font-rubik-bold">Location</Text>
             <View className="flex flex-row items-center justify-start mt-4 gap-2">
               <Image source={icons.location} className="w-7 h-7" />
-              <Text className="text-black-200 text-sm font-rubik-medium">{property.address}</Text>
+              <Text className="text-black-200 text-sm font-rubik-medium w-[300px]">
+                {property.address}
+              </Text>
             </View>
 
             <Image source={images.map} className="h-52 w-full mt-5 rounded-xl" />
@@ -221,7 +269,7 @@ function SingleProperty() {
                 </TouchableOpacity>
               </View>
 
-              <View className="mt-5">
+              <View className="my-5">
                 <Comment />
               </View>
             </View>
