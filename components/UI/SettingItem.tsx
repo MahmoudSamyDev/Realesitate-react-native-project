@@ -17,7 +17,7 @@ function SettingsItem({
   return (
     <TouchableOpacity className="flex flex-row items-center justify-between py-3" onPress={onPress}>
       <View className="flex flex-row items-center gap-3">
-        <Image source={icon} className="size-6" />
+        <Image source={icon} className="size-6" tintColor="#191D31" />
         <Text className={`text-lg font-rubik-medium text-black-300 ${textStyle}`}>{title}</Text>
       </View>
       {showArrow && <Image source={icons.rightArrow} className="size-5" />}

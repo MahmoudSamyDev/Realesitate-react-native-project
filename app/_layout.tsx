@@ -1,4 +1,5 @@
 import { AuthProvider } from "@/lib/AuthContext";
+import { WatchlistProvider } from "@/lib/WatchlistContext";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
@@ -23,7 +24,9 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
   return (
     <AuthProvider>
-      <Stack screenOptions={{ headerShown: false }} />
+      <WatchlistProvider>
+        <Stack screenOptions={{ headerShown: false }} />
+      </WatchlistProvider>
     </AuthProvider>
   );
 }

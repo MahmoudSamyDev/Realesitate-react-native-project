@@ -32,6 +32,10 @@ function Profile() {
     router.push("/payments");
   }
 
+  function handleNavigateToWatchlist() {
+    router.push("/watchlist");
+  }
+
   function handleInviteFriends() {
     setInviteModalVisible(true);
   }
@@ -85,6 +89,13 @@ function Profile() {
           showArrow={true}
           textStyle=""
           onPress={handleNavigateToBookings}
+        />
+        <SettingsItem
+          title="My Watchlist"
+          icon={icons.heart}
+          showArrow={true}
+          textStyle=""
+          onPress={handleNavigateToWatchlist}
         />
         <SettingsItem
           title="Payments"

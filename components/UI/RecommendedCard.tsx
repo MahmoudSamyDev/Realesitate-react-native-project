@@ -1,9 +1,19 @@
 import icons from "@/constants/icons";
+import { useWatchlist } from "@/lib/WatchlistContext";
 import { SignleFeaturedCard_TP } from "@/utils/Types/appartments";
 import { router } from "expo-router";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 function RecommendedCard({ data }: { data: SignleFeaturedCard_TP }) {
+  const { isWatchlisted, toggleWatchlist } = useWatchlist();
+  const isInWatchlist = isWatchlisted(data.id);
+
+  const handleWatchlistToggle = (e: any) => {
+    e.stopPropagation();
+    e.preventDefault();
+    toggleWatchlist(data.id);
+  };
+
   return (
     <TouchableOpacity
       className="flex flex-col mt-4 px-3 py-4 rounded-lg bg-white shadow-lg shadow-black-100/70 relative"
@@ -29,7 +39,13 @@ function RecommendedCard({ data }: { data: SignleFeaturedCard_TP }) {
 
         <View className="flex flex-row items-center justify-between mt-2 ">
           <Text className="text-base font-rubik-bold text-primary-300">{data?.price}</Text>
-          <Image source={icons.heart} className="size-5 mr-2" tintColor="#191D31" />
+          <TouchableOpacity onPress={handleWatchlistToggle}>
+            <Image
+              source={icons.heart}
+              className="size-5 mr-2"
+              tintColor={isInWatchlist ? "#F75555" : "#191D31"}
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </TouchableOpacity>

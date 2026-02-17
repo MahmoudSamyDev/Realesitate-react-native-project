@@ -38,7 +38,7 @@ export const cards = [
 
 export const featuredCards = [
   {
-    id: "1",
+    id: "19",
     title: "Modern Apartment in New York",
     location: "Manhattan, NY",
     price: "$120/night",
@@ -47,7 +47,7 @@ export const featuredCards = [
     category: "flat",
   },
   {
-    id: "2",
+    id: "20",
     title: "Traditional House in Kyoto",
     location: "Kyoto, Japan",
     price: "$200/night",
@@ -56,7 +56,7 @@ export const featuredCards = [
     category: "house",
   },
   {
-    id: "3",
+    id: "21",
     title: "Luxury Villa with Pool",
     location: "Dubai Marina, UAE",
     price: "$450/night",
@@ -65,7 +65,7 @@ export const featuredCards = [
     category: "villa",
   },
   {
-    id: "4",
+    id: "22",
     title: "Cozy Cabin in the Mountains",
     location: "Aspen, Colorado",
     price: "$180/night",
@@ -74,7 +74,7 @@ export const featuredCards = [
     category: "cabin",
   },
   {
-    id: "5",
+    id: "23",
     title: "Beachfront Resort Suite",
     location: "Maldives",
     price: "$600/night",
@@ -83,7 +83,7 @@ export const featuredCards = [
     category: "resort",
   },
   {
-    id: "6",
+    id: "24",
     title: "Minimal Studio Flat",
     location: "Berlin, Germany",
     price: "$90/night",
@@ -380,26 +380,26 @@ export const facilities = [
 export const gallery = [
   {
     id: 1,
-    image: images.newYork,
+    image: "https://i.postimg.cc/s2DJKh34/new_york.png",
   },
   {
     id: 2,
-    image: images.japan,
+    image: "https://i.postimg.cc/85j2071c/japan.jpg",
   },
   {
     id: 3,
-    image: images.dubai,
+    image: "https://i.postimg.cc/4y9J872F/dubai.jpg",
   },
   {
     id: 4,
-    image: images.mountains,
+    image: "https://i.postimg.cc/KYM869cP/mountains.jpg",
   },
   {
     id: 5,
-    image: images.maldives,
+    image: "https://i.postimg.cc/5tRkC38k/Modern_Apartment_Loft.jpg",
   },
   {
     id: 6,
-    image: images.berlin,
+    image: "https://i.postimg.cc/15827304/berlin.jpg",
   },
 ];

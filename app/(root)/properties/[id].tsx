@@ -2,6 +2,7 @@ import Comment from "@/components/UI/Comment";
 import { allProperties, facilities, propertyGallery, propertyReviews } from "@/constants/data";
 import icons from "@/constants/icons";
 import images from "@/constants/images";
+import { useWatchlist } from "@/lib/WatchlistContext";
 import { router, useLocalSearchParams } from "expo-router";
 import {
   Dimensions,
@@ -18,8 +19,16 @@ function SingleProperty() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const windowHeight = Dimensions.get("window").height;
   const insets = useSafeAreaInsets();
+  const { isWatchlisted, toggleWatchlist } = useWatchlist();
 
   const propertyDetails = allProperties.find((property) => property.id === id);
+  const isInWatchlist = isWatchlisted(id || "");
+
+  const handleWatchlistToggle = () => {
+    if (id) {
+      toggleWatchlist(id);
+    }
+  };
 
   const property = {
     image: propertyDetails?.image,
@@ -60,7 +69,13 @@ function SingleProperty() {
               </TouchableOpacity>
 
               <View className="flex flex-row items-center gap-3">
-                <Image source={icons.heart} className="size-7" tintColor={"#191D31"} />
+                <TouchableOpacity onPress={handleWatchlistToggle}>
+                  <Image
+                    source={icons.heart}
+                    className="size-7"
+                    tintColor={isInWatchlist ? "#F75555" : "#191D31"}
+                  />
+                </TouchableOpacity>
                 <Image source={icons.send} className="size-7" />
               </View>
             </View>
@@ -215,7 +230,7 @@ function SingleProperty() {
       </ScrollView>
 
       <View
-        className="absolute bg-white bottom-0 w-full rounded-t-2xl border-t border-r border-l border-primary-200 p-7"
+        className="absolute bg-white bottom-0 w-full rounded-t-2xl border-t border-r border-l border-primary-200 px-7 pt-2"
         style={{ paddingBottom: insets.bottom + 20 }}
       >
         <View className="flex flex-row items-center justify-between gap-10">
