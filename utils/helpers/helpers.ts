@@ -1,5 +1,6 @@
 import { recommendations } from "@/constants/data";
 import icons from "@/constants/icons";
+import { router } from "expo-router";
 
 export function filterRecommendationsByCategory(selectedCategory: string) {
   if (selectedCategory === "All") {
@@ -38,4 +39,12 @@ export function getCardColor(type: string) {
     default:
       return "bg-accent-100";
   }
+}
+
+export function routeToNotifications() {
+  router.push("/notifications");
+}
+
+export function routeToProfile() {
+  router.push("/profile");
 }

@@ -5,14 +5,8 @@ import { router } from "expo-router";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 function RecommendedCard({ data }: { data: SignleFeaturedCard_TP }) {
-  const { isWatchlisted, toggleWatchlist } = useWatchlist();
+  const { isWatchlisted } = useWatchlist();
   const isInWatchlist = isWatchlisted(data.id);
-
-  const handleWatchlistToggle = (e: any) => {
-    e.stopPropagation();
-    e.preventDefault();
-    toggleWatchlist(data.id);
-  };
 
   return (
     <TouchableOpacity
@@ -39,13 +33,11 @@ function RecommendedCard({ data }: { data: SignleFeaturedCard_TP }) {
 
         <View className="flex flex-row items-center justify-between mt-2 ">
           <Text className="text-base font-rubik-bold text-primary-300">{data?.price}</Text>
-          <TouchableOpacity onPress={handleWatchlistToggle}>
-            <Image
-              source={icons.heart}
-              className="size-5 mr-2"
-              tintColor={isInWatchlist ? "#F75555" : "#191D31"}
-            />
-          </TouchableOpacity>
+          <Image
+            source={icons.heart}
+            className="size-5 mr-2"
+            tintColor={isInWatchlist ? "#F75555" : "#191D31"}
+          />
         </View>
       </View>
     </TouchableOpacity>

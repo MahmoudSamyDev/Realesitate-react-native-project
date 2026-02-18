@@ -1,10 +1,10 @@
 import { allProperties } from "@/constants/data";
 import icons from "@/constants/icons";
 import { useWatchlist } from "@/lib/WatchlistContext";
+import { routeToProfile } from "@/utils/helpers/helpers";
 import { router } from "expo-router";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 function Watchlist() {
   const { watchlist, toggleWatchlist } = useWatchlist();
 
@@ -20,7 +20,7 @@ function Watchlist() {
   return (
     <SafeAreaView className="h-full bg-accent-100">
       <View className="flex flex-row items-center px-5 py-4 bg-accent-100">
-        <TouchableOpacity onPress={() => router.back()}>
+        <TouchableOpacity onPress={routeToProfile}>
           <Image source={icons.backArrow} className="w-6 h-6" />
         </TouchableOpacity>
         <Text className="text-2xl font-rubik-bold text-black-300 ml-4">My Watchlist</Text>

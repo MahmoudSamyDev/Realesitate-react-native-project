@@ -1,11 +1,10 @@
 import PaymentCard from "@/components/UI/PaymentCard";
 import PaymentEditModal from "@/components/UI/PaymentEditModal";
 import icons from "@/constants/icons";
-import { router } from "expo-router";
+import { routeToNotifications, routeToProfile } from "@/utils/helpers/helpers";
 import { useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 // Placeholder payment methods data
 const paymentMethods = [
   {
@@ -67,14 +66,16 @@ function Payments() {
         <View className="flex flex-row items-center justify-between mt-5">
           <View className="flex flex-row items-center">
             <TouchableOpacity
-              onPress={() => router.push("/profile")}
+              onPress={routeToProfile}
               className="flex flex-row bg-primary-200 rounded-full size-11 items-center justify-center mr-3"
             >
               <Image source={icons.backArrow} className="size-5" />
             </TouchableOpacity>
             <Text className="text-xl font-rubik-bold text-black-300">Payment Methods</Text>
           </View>
-          <Image source={icons.bell} className="size-5" />
+          <TouchableOpacity onPress={routeToNotifications}>
+            <Image source={icons.bell} className="size-6" />
+          </TouchableOpacity>
         </View>
 
         <View className="mt-7">
